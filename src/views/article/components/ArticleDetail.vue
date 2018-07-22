@@ -19,14 +19,14 @@
 
             <div class="postInfo-container">
               <el-row>
-                <el-col :span="8">
-                  <el-form-item label-width="45px" label="作者:" class="postInfo-container-item">
-                    <el-select v-model="postForm.author" filterable remote placeholder="搜索用户" :remote-method="getRemoteUserList">
-                      <el-option v-for="(item,index) in userListOptions" :key="item+index" :label="item" :value="item">
-                      </el-option>
-                    </el-select>
-                  </el-form-item>
-                </el-col>
+                <!--<el-col :span="8">-->
+                  <!--<el-form-item label-width="45px" label="作者:" class="postInfo-container-item">-->
+                    <!--<el-select v-model="postForm.author" filterable remote placeholder="搜索用户" :remote-method="getRemoteUserList">-->
+                      <!--<el-option v-for="(item,index) in userListOptions" :key="item+index" :label="item" :value="item">-->
+                      <!--</el-option>-->
+                    <!--</el-select>-->
+                  <!--</el-form-item>-->
+                <!--</el-col>-->
 
                 <el-col :span="10">
                   <el-form-item label-width="80px" label="发布时间:" class="postInfo-container-item">
@@ -35,6 +35,12 @@
                   </el-form-item>
                 </el-col>
 
+                <el-form-item label-width="80px" label="文章类型:" class="postInfo-container-item">
+                <el-select v-model="postForm.type" placeholder="文章类型">
+                  <el-option label="区域一" value="shanghai"></el-option>
+                  <el-option label="区域二" value="beijing"></el-option>
+                </el-select>
+                </el-form-item>
                 <!--<el-col :span="6">-->
                   <!--<el-form-item label-width="60px" label="重要性:" class="postInfo-container-item">-->
                     <!--<el-rate style="margin-top:8px;" v-model="postForm.importance" :max='3' :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :low-threshold="1"-->
@@ -57,9 +63,12 @@
           <Tinymce :height=400 ref="editor" v-model="postForm.content" />
         </div>
 
+        <el-form-item label="文章封面">
+        </el-form-item>
         <div style="margin-bottom: 20px;">
           <Upload v-model="postForm.image_uri" />
         </div>
+
       </div>
     </el-form>
 
@@ -87,6 +96,7 @@ const defaultForm = {
   source_uri: '', // 文章外链
   image_uri: '', // 文章图片
   display_time: undefined, // 前台展示时间
+  type:'',
   id: undefined,
   platforms: ['a-platform'],
   comment_disabled: false,

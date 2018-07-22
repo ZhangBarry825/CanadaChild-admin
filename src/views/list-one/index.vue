@@ -3,7 +3,7 @@
     <div class="buttons">
       <div class="button">
         <el-button type="primary" icon="el-icon-edit" @click="goPublish">新增</el-button>
-        <el-button type="primary" icon="el-icon-delete">删除</el-button>
+        <el-button type="primary" icon="el-icon-delete" @click="allDelete">删除</el-button>
       </div>
       <div class="button" style="margin-right: 50px">
         <el-input style="width: 150px"></el-input>
@@ -22,13 +22,14 @@
       </el-table-column>
       <el-table-column
         label="日期"
-        prop="date"
-        width="120">
+        prop="create_time"
+        width="160">
       </el-table-column>
       <el-table-column
         prop="title"
         label="标题"
-        width="300">
+        width="300"
+        show-overflow-tooltip>
       </el-table-column>
       <el-table-column
         prop="description"
@@ -37,16 +38,16 @@
       </el-table-column>
 
       <el-table-column
-        prop="tag"
+        prop="status"
         label="状态"
         width="100"
-        :filters="[{ text: '禁用', value: '禁用' }, { text: '正常', value: '正常' }]"
+        :filters="[{ text: '禁用', value: 0}, { text: '正常', value: 1 }]"
         :filter-method="filterTag"
         filter-placement="bottom-end">
         <template slot-scope="scope">
           <el-tag
-            :type="scope.row.tag === '禁用' ? 'primary' : 'success'"
-            disable-transitions>{{scope.row.tag}}
+            :type="scope.row.status === 0 ? 'danger' : 'primary' "
+            plain disable-transitions>{{scope.row.status|statusFilter}}
           </el-tag>
         </template>
       </el-table-column>
@@ -57,11 +58,7 @@
             size="mini"
             @click="handleEdit(scope.$index, scope.row)">编辑
           </el-button>
-          <el-button
-            size="mini"
-            type="danger"
-            @click="handleDelete(scope.$index, scope.row)">删除
-          </el-button>
+          <el-button size="mini" type="danger" @click="open2(scope.$index, scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -70,86 +67,126 @@
       class="page-num"
       background
       layout="prev, pager, next"
-      :total="1000">
+      :current-page="currentPage"
+      @current-change="currentChange"
+      :total="totalPage">
     </el-pagination>
   </div>
 </template>
 
 <script>
+
+
+
+  import {getListOne,delListOne} from "@/api/list-one";
+
   export default {
+
     name   : 'index',
     data() {
       return {
-        tableData3       : [{
-          date   : '2016-05-03',
-          title   : '今年上半年，央企交出亮眼成绩单！',
-          description: '不止6月，整个上半年，央企经济运行都保持了稳中向好的态势，收入利润持续快速增长，创历史同期最好水平，交出了一份亮眼的成绩单——累计实现营业收入13.7万亿元，同比增长10.1%；实现增加值3.5万亿元，同比增长7.5%；实现利润8877.9亿元，同比增长23%；上交税费总额1.2万亿元，同比增长10.3%。',
-          tag    : '禁用'
-        },{
-          date   : '2016-05-03',
-          title   : '今年上半年，央企交出亮眼成绩单！',
-          description: '不止6月，整个上半年，央企经济运行都保持了稳中向好的态势，收入利润持续快速增长，创历史同期最好水平，交出了一份亮眼的成绩单——累计实现营业收入13.7万亿元，同比增长10.1%；实现增加值3.5万亿元，同比增长7.5%；实现利润8877.9亿元，同比增长23%；上交税费总额1.2万亿元，同比增长10.3%。',
-          tag    : '禁用'
-        },{
-          date   : '2016-05-03',
-          title   : '今年上半年，央企交出亮眼成绩单！',
-          description: '不止6月，整个上半年，央企经济运行都保持了稳中向好的态势，收入利润持续快速增长，创历史同期最好水平，交出了一份亮眼的成绩单——累计实现营业收入13.7万亿元，同比增长10.1%；实现增加值3.5万亿元，同比增长7.5%；实现利润8877.9亿元，同比增长23%；上交税费总额1.2万亿元，同比增长10.3%。',
-          tag    : '正常'
-        },{
-          date   : '2016-05-03',
-          title   : '今年上半年，央企交出亮眼成绩单！',
-          description: '不止6月，整个上半年，央企经济运行都保持了稳中向好的态势，收入利润持续快速增长，创历史同期最好水平，交出了一份亮眼的成绩单——累计实现营业收入13.7万亿元，同比增长10.1%；实现增加值3.5万亿元，同比增长7.5%；实现利润8877.9亿元，同比增长23%；上交税费总额1.2万亿元，同比增长10.3%。',
-          tag    : '正常'
-        },{
-          date   : '2016-05-03',
-          title   : '今年上半年，央企交出亮眼成绩单！',
-          description: '不止6月，整个上半年，央企经济运行都保持了稳中向好的态势，收入利润持续快速增长，创历史同期最好水平，交出了一份亮眼的成绩单——累计实现营业收入13.7万亿元，同比增长10.1%；实现增加值3.5万亿元，同比增长7.5%；实现利润8877.9亿元，同比增长23%；上交税费总额1.2万亿元，同比增长10.3%。',
-          tag    : '禁用'
-        },{
-          date   : '2016-05-03',
-          title   : '今年上半年，央企交出亮眼成绩单！',
-          description: '不止6月，整个上半年，央企经济运行都保持了稳中向好的态势，收入利润持续快速增长，创历史同期最好水平，交出了一份亮眼的成绩单——累计实现营业收入13.7万亿元，同比增长10.1%；实现增加值3.5万亿元，同比增长7.5%；实现利润8877.9亿元，同比增长23%；上交税费总额1.2万亿元，同比增长10.3%。',
-          tag    : '禁用'
-        },{
-          date   : '2016-05-03',
-          title   : '今年上半年，央企交出亮眼成绩单！',
-          description: '不止6月，整个上半年，央企经济运行都保持了稳中向好的态势，收入利润持续快速增长，创历史同期最好水平，交出了一份亮眼的成绩单——累计实现营业收入13.7万亿元，同比增长10.1%；实现增加值3.5万亿元，同比增长7.5%；实现利润8877.9亿元，同比增长23%；上交税费总额1.2万亿元，同比增长10.3%。',
-          tag    : '禁用'
-        },{
-          date   : '2016-05-03',
-          title   : '今年上半年，央企交出亮眼成绩单！',
-          description: '不止6月，整个上半年，央企经济运行都保持了稳中向好的态势，收入利润持续快速增长，创历史同期最好水平，交出了一份亮眼的成绩单——累计实现营业收入13.7万亿元，同比增长10.1%；实现增加值3.5万亿元，同比增长7.5%；实现利润8877.9亿元，同比增长23%；上交税费总额1.2万亿元，同比增长10.3%。',
-          tag    : '禁用'
-        },{
-          date   : '2016-05-03',
-          title   : '今年上半年，央企交出亮眼成绩单！',
-          description: '不止6月，整个上半年，央企经济运行都保持了稳中向好的态势，收入利润持续快速增长，创历史同期最好水平，交出了一份亮眼的成绩单——累计实现营业收入13.7万亿元，同比增长10.1%；实现增加值3.5万亿元，同比增长7.5%；实现利润8877.9亿元，同比增长23%；上交税费总额1.2万亿元，同比增长10.3%。',
-          tag    : '禁用'
-        },{
-          date   : '2016-05-03',
-          title   : '今年上半年，央企交出亮眼成绩单！',
-          description: '不止6月，整个上半年，央企经济运行都保持了稳中向好的态势，收入利润持续快速增长，创历史同期最好水平，交出了一份亮眼的成绩单——累计实现营业收入13.7万亿元，同比增长10.1%；实现增加值3.5万亿元，同比增长7.5%；实现利润8877.9亿元，同比增长23%；上交税费总额1.2万亿元，同比增长10.3%。',
-          tag    : '禁用'
-        }, ],
-        multipleSelection: []
+        tableData3       : [],
+        multipleSelection: [],
+        totalPage:0,
+        currentPage:1
       };
     },
+    filters: {
+      statusFilter(status) {
+        const statusMap = {
+          1: '正常',
+          0: '禁用'
+        }
+        return statusMap[status]
+      },
+    },
     methods: {
+
+      open2($index,row) {
+        let that=this
+        this.$confirm('此操作将永久删除该文章, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          delListOne(row.id).then(res=>{
+            if(res.code===200){
+              this.$message({
+                type: 'success',
+                message: '删除成功!'
+              });
+              that.getItems('赴加生子福利',that.currentPage,10)
+            }
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+        });
+      },
+
       handleSelectionChange(val) {
         this.multipleSelection = val;
+        console.log(this.multipleSelection)
       },
       handleEdit(index, row) {
-        console.log(index, row);
+        this.$router.push('/article/update?id='+row.id)
       },
-      handleDelete(index, row) {
-        console.log(index, row);
+      allDelete() {
+        let that=this
+        this.$confirm('此操作将永久删除该文章, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          let ret=true;
+          that.multipleSelection.forEach(function (value) {
+            delListOne(value.id).then(res=>{
+              if(res.code!==200){
+                ret = false;
+              }
+            })
+          })
+          if(ret){
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            });
+          }
+          that.getItems('赴加生子福利',that.currentPage,10)
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+        });
+
       },
       filterTag(value, row) {
-        return row.tag === value;
+        return row.status === value;
       },
       goPublish(){
         this.$router.push('/article/create');
+      },
+      currentChange(val){
+        console.log(val)
+        this.currentPage=val
+        this.getItems('赴加生子福利',val,10)
+      },
+      getItems(type,pageNum,pageSize){
+        getListOne(type,pageNum,pageSize).then(res => {
+          console.log("res:");
+          console.log(res);
+          if(res.code===200){
+            this.tableData3=res.data.rows
+            this.totalPage=res.data.count
+          }
+        });
       }
+    },
+    mounted(){
+      this.getItems('赴加生子福利',1,10)
     }
   };
 </script>
