@@ -10,9 +10,11 @@ export function fetchList(query) {
 
 export function fetchArticle(id) {
   return request({
-    url: '/article/detail',
+    url: '/api/admin/article/detail',
     method: 'get',
-    params: { id }
+    params: {
+      id:id
+    }
   })
 }
 
@@ -26,7 +28,16 @@ export function fetchPv(pv) {
 
 export function createArticle(data) {
   return request({
-    url: '/article/create',
+    url: '/api/admin/article/create',
+    method: 'post',
+    data
+  })
+}
+
+export function searchArticle(data) {
+
+  return request({
+    url: '/api/admin/article/search',
     method: 'post',
     data
   })
@@ -34,7 +45,7 @@ export function createArticle(data) {
 
 export function updateArticle(data) {
   return request({
-    url: '/article/update',
+    url: '/api/admin/article/update',
     method: 'post',
     data
   })

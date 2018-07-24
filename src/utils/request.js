@@ -12,7 +12,7 @@ const service = axios.create({
 // request interceptor
 service.interceptors.request.use(config => {
   // Do something before request is sent
-  config.headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'
+  config.headers['Content-Type'] = 'application/form-data'
   if (store.getters.token) {
     // 让每个请求携带token-- ['X-Token']为自定义key 请根据实际情况自行修改
     config.headers['X-Token'] = getToken()
@@ -42,8 +42,13 @@ service.interceptors.response.use(
         type: 'error',
         duration: 5 * 1000
       })
-      // 50008:非法的token; 50012:其他客户端登录了;  50014:Token 过期了;
-      if (res.code === 401 ) {
+      if (res.code === 400 ) {
+        Message({
+          message: res.msg,
+          type: 'error',
+          duration: 5 * 1000
+        })
+      }else if (res.code === 401 ) {
         // 请自行在引入 MessageBox
         MessageBox.confirm('你已被登出，可以取消继续留在该页面，或者重新登录', '确定登出', {
           confirmButtonText: '重新登录',

@@ -582,7 +582,8 @@ export const asyncRouterMap = [
     component: Layout,
     meta     : {
       title: 'list-one',
-      icon : 'star'
+      icon : 'star',
+      noCache: true
     },
     children : [
       {
@@ -591,7 +592,8 @@ export const asyncRouterMap = [
         name     : 'index',
         meta     : {
           title: '赴加生子福利',
-          icon : 'star'
+          icon : 'star',
+          noCache: true
         }
       }
     ]
@@ -607,7 +609,8 @@ export const asyncRouterMap = [
         name     : 'createArticle',
         meta     : {
           title: '新增文章',
-          icon : 'edit'
+          icon : 'edit',
+          noCache: true
         },
         hidden   : true
       },
@@ -617,7 +620,8 @@ export const asyncRouterMap = [
         name     : 'editArticle',
         meta     : {
           title: '修改文章',
-          icon : 'edit'
+          icon : 'edit',
+          noCache: true
         },
         hidden   : true
       }

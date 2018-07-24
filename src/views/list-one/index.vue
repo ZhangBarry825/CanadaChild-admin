@@ -6,16 +6,17 @@
         <el-button type="primary" icon="el-icon-delete" @click="allDelete">删除</el-button>
       </div>
       <div class="button" style="margin-right: 50px">
-        <el-input style="width: 150px"></el-input>
-        <el-button type="primary" icon="el-icon-search">搜索</el-button>
+        <el-input style="width: 150px" v-model="searchText"></el-input>
+        <el-button type="primary" @click="searchRes(1,10)" icon="el-icon-search">搜索</el-button>
       </div>
     </div>
-    <el-table
+    <el-table v-loading="loading"
       ref="multipleTable"
       :data="tableData3"
       tooltip-effect="dark"
       style="width: 100%"
       @selection-change="handleSelectionChange">
+
       <el-table-column
         type="selection"
         width="55">
@@ -77,18 +78,19 @@
 <script>
 
 
-
-  import {getListOne,delListOne} from "@/api/list-one";
+  import {getListOne, delListOne} from "@/api/list-one";
+  import {searchArticle} from "@/api/article";
 
   export default {
-
     name   : 'index',
     data() {
       return {
         tableData3       : [],
         multipleSelection: [],
-        totalPage:0,
-        currentPage:1
+        totalPage        : 0,
+        currentPage      : 1,
+        searchText:'',
+        loading:false
       };
     },
     filters: {
@@ -96,31 +98,31 @@
         const statusMap = {
           1: '正常',
           0: '禁用'
-        }
-        return statusMap[status]
-      },
+        };
+        return statusMap[status];
+      }
     },
     methods: {
 
-      open2($index,row) {
-        let that=this
+      open2($index, row) {
+        let that = this;
         this.$confirm('此操作将永久删除该文章, 是否继续?', '提示', {
           confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
+          cancelButtonText : '取消',
+          type             : 'warning'
         }).then(() => {
-          delListOne(row.id).then(res=>{
-            if(res.code===200){
+          delListOne(row.id).then(res => {
+            if (res.code === 200) {
               this.$message({
-                type: 'success',
+                type   : 'success',
                 message: '删除成功!'
               });
-              that.getItems('赴加生子福利',that.currentPage,10)
+              that.getItems('赴加生子福利', that.currentPage, 10);
             }
-          })
+          });
         }).catch(() => {
           this.$message({
-            type: 'info',
+            type   : 'info',
             message: '已取消删除'
           });
         });
@@ -128,65 +130,110 @@
 
       handleSelectionChange(val) {
         this.multipleSelection = val;
-        console.log(this.multipleSelection)
+        console.log(this.multipleSelection);
       },
       handleEdit(index, row) {
-        this.$router.push('/article/update?id='+row.id)
+        this.$router.push('/article/update?id=' + row.id);
       },
       allDelete() {
-        let that=this
-        this.$confirm('此操作将永久删除该文章, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          let ret=true;
-          that.multipleSelection.forEach(function (value) {
-            delListOne(value.id).then(res=>{
-              if(res.code!==200){
-                ret = false;
-              }
-            })
-          })
-          if(ret){
-            this.$message({
-              type: 'success',
-              message: '删除成功!'
-            });
-          }
-          that.getItems('赴加生子福利',that.currentPage,10)
-        }).catch(() => {
+        if (this.multipleSelection.length < 1) {
           this.$message({
-            type: 'info',
-            message: '已取消删除'
+            showClose: true,
+            message  : '请先选择要删除的文章!'
           });
-        });
+        } else {
+          let that = this;
+          this.$confirm('此操作将永久删除该文章, 是否继续?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText : '取消',
+            type             : 'warning'
+          }).then(() => {
+            let ret = true;
+            this.loading=true
+            that.multipleSelection.forEach(function (value) {
+              delListOne(value.id).then(res => {
+                if (res.code !== 200) {
+                  ret = false;
+                }
+              });
+            });
+            setTimeout(()=>{
+              this.loading=false
+              if (ret) {
+                this.$message({
+                  type   : 'success',
+                  message: '删除成功!'
+                });
+              }
+              console.log(that.currentPage);
+              that.currentPage = 1;
+              that.getItems('赴加生子福利', 1, 10);
+              // if(this.totalPage/10 < that.currentPage){
+              //   that.currentPage-=1
+              // }
+            },3000)
 
+
+          }).catch(() => {
+            this.$message({
+              type   : 'info',
+              message: '已取消删除'
+            });
+          });
+        }
       },
       filterTag(value, row) {
         return row.status === value;
       },
-      goPublish(){
+      goPublish() {
         this.$router.push('/article/create');
       },
-      currentChange(val){
-        console.log(val)
-        this.currentPage=val
-        this.getItems('赴加生子福利',val,10)
+      currentChange(val) {
+
+        if(this.searchText===''){
+          console.log(val);
+          this.currentPage = val;
+          this.getItems('赴加生子福利', val, 10);
+        }else {
+          console.log(val);
+          this.currentPage = val;
+          this.searchRes(val, 10);
+        }
       },
-      getItems(type,pageNum,pageSize){
-        getListOne(type,pageNum,pageSize).then(res => {
+      searchRes(pageNum, pageSize){
+        if(this.searchText!==''){
+        let key=this.searchText
+        let type="赴加生子福利"
+          let data={
+          key:key,
+          type:type,
+          page_num:pageNum,
+          page_size:pageSize
+          }
+        searchArticle(data).then(res => {
           console.log("res:");
           console.log(res);
-          if(res.code===200){
-            this.tableData3=res.data.rows
-            this.totalPage=res.data.count
+          if (res.code === 200) {
+            this.tableData3 = res.data.rows;
+            this.totalPage = res.data.count;
+            // this.currentPage = pageNum;
+          }
+        });
+        }else {
+          this.getItems('赴加生子福利', 1, 10);
+        }
+      },
+      getItems(type, pageNum, pageSize) {
+        getListOne(type, pageNum, pageSize).then(res => {
+          if (res.code === 200) {
+            this.tableData3 = res.data.rows;
+            this.totalPage = res.data.count;
           }
         });
       }
     },
-    mounted(){
-      this.getItems('赴加生子福利',1,10)
+    mounted() {
+      this.getItems('赴加生子福利', 1, 10);
     }
   };
 </script>
