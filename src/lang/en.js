@@ -60,7 +60,9 @@ export default {
     exportZip: 'Export Zip',
     theme: 'Theme',
     clipboardDemo: 'Clipboard',
-    i18n: 'I18n'
+    i18n: 'I18n',
+    listOne:'Welfare',
+    listTwo:'Example'
   },
   navbar: {
     logOut: 'Log Out',
@@ -148,5 +150,11 @@ export default {
     close: 'Close',
     closeOthers: 'Close Others',
     closeAll: 'Close All'
+  },
+  listOne:{
+    listOneIndex:'welfare',
+  },
+  listTwo:{
+    listTwoIndex:'example',
   }
 }

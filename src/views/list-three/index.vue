@@ -83,7 +83,7 @@
   import {searchArticle} from "@/api/article";
 
   export default {
-    name   : 'listOneIndex',
+    name   : 'listThreeIndex',
     data() {
       return {
         tableData3       : [],
@@ -92,7 +92,7 @@
         currentPage      : 1,
         searchText:'',
         loading:false,
-        type:'赴加生子福利'
+        type:'月子中心'
       };
     },
     filters: {

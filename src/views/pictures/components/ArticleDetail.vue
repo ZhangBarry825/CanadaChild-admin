@@ -62,7 +62,7 @@
               </el-row>
               <el-row>
                 <el-form-item label-width="80px" label="文章类型:" class="postInfo-container-item">
-                  <el-select v-model="postForm.type" placeholder="文章类型">
+                  <el-select v-model="postForm.type" placeholder="文章类型" disabled="">
                     <el-option label="赴加生子福利" value="赴加生子福利"></el-option>
                     <el-option label="成功案例" value="成功案例"></el-option>
                     <el-option label="月子中心" value="月子中心"></el-option>
@@ -71,6 +71,7 @@
                     <el-option label="赴加攻略" value="赴加攻略"></el-option>
                     <el-option label="赴加签证" value="赴加签证"></el-option>
                     <el-option label="大温介绍" value="大温介绍"></el-option>
+                    <el-option label="轮播图" value="轮播图"></el-option>
                   </el-select>
                 </el-form-item>
               </el-row>
@@ -89,7 +90,7 @@
           <Tinymce :height=400 ref="editor" v-model="postForm.content"/>
         </div>
 
-        <el-form-item label="文章封面">
+        <el-form-item label="轮播图片">
         </el-form-item>
         <div style="margin-bottom: 20px;">
           <Upload v-model="postForm.cover"/>
@@ -261,7 +262,12 @@
             message: '摘要为必传项',
             type   : 'error'
           });
-        } else {
+        }else if (!this.postForm.cover) {
+          this.$message({
+            message: '轮播图片为必传项',
+            type   : 'error'
+          });
+        }  else {
           // this.postForm.create_time = parseInt(this.postForm.create_time / 1000);
           console.log(this.postForm.create_time);
           let data = {
@@ -317,7 +323,7 @@
           path = '/list-two';
         } else if (this.postForm.type === '月子中心') {
           path = '/list-three';
-        } else if (this.postForm.type === '政策解析') {
+        } else if (this.postForm.type === '政策解读') {
           path = '/list-four';
         } else if (this.postForm.type === '赴加生子费用') {
           path = '/list-five';
@@ -327,11 +333,18 @@
           path = '/list-seven';
         } else if (this.postForm.type === '大温介绍') {
           path = '/list-eight';
+        } else if (this.postForm.type === '轮播图') {
+          path = '/pictures';
         } else {
           path = '/list-one';
         }
         setTimeout(() => {
-          this.$router.push({path});
+          this.$router.push({
+            path
+            // query: {
+            //   t: +new Date() //保证每次点击路由的query项都是不一样的，确保会重新刷新view
+            // }
+          });
         }, 2000);
       },
       draftForm() {
@@ -366,7 +379,7 @@
         this.postForm.type = "成功案例";
       } else if (this.$route.query.type === "月子中心") {
         this.postForm.type = "月子中心";
-      } else if (this.$route.query.type === "政策解析") {
+      } else if (this.$route.query.type === "政策解读") {
         this.postForm.type = "政策解读";
       } else if (this.$route.query.type === "赴加生子费用") {
         this.postForm.type = "赴加生子费用";
@@ -376,6 +389,8 @@
         this.postForm.type = "赴加签证";
       } else if (this.$route.query.type === "大温介绍") {
         this.postForm.type = "大温介绍";
+      }else if (this.$route.query.type === "轮播图") {
+        this.postForm.type = "轮播图";
       }
     }
   };

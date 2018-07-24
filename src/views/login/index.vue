@@ -6,7 +6,7 @@
 
       <div class="title-container">
         <h3 class="title">{{$t('login.title')}}</h3>
-        <lang-select class="set-language"></lang-select>
+        <!--<lang-select class="set-language"></lang-select>-->
       </div>
 
       <el-form-item prop="username">
@@ -86,8 +86,8 @@
       };
       return {
         loginForm   : {
-          username: 'admin',
-          password: '123456'
+          username: '',
+          password: ''
         },
         loginRules  : {
           // username: [{ required: true, trigger: 'blur', validator: validateUsername }],
@@ -117,7 +117,7 @@
 
             this.$store.dispatch('LoginByUsername', this.loginForm).then(() => {
               this.loading = false;
-              this.$router.push({path: '/list-one'});
+              this.$router.push({path: '/home'});
             }).catch(() => {
               this.loading = false;
             });

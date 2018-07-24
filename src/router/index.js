@@ -48,9 +48,12 @@ export const constantRouterMap = [
   {
     path     : '',
     component: Layout,
-    redirect : '/list-one',
+    redirect : '/home/index',
+    hidden:true,
     children : [{
+      hidden:true,
       path     : 'dashboard',
+      redirect : '/home/index',
       component: () => import('@/views/dashboard/index'),
       name     : 'dashboard',
       meta     : {
@@ -576,6 +579,72 @@ export const asyncRouterMap = [
   //     }
   //   }]
   // },
+
+  {
+    path     : '/home',
+    redirect : '/home/index',
+    component: Layout,
+    meta     : {
+      title: 'home',
+      icon : 'star',
+      noCache: true
+    },
+    children : [
+      {
+        path     : 'index',
+        component: () => import('@/views/home/index.vue'),
+        name     : 'homeIndex',
+        meta     : {
+          title: '首页',
+          icon : 'dashboard',
+          noCache: true
+        }
+      }
+    ]
+  },
+  {
+    path     : '/pictures',
+    redirect : '/pictures/index',
+    component: Layout,
+    meta     : {
+      icon : 'star',
+      noCache: true
+    },
+    children : [
+      {
+        path     : 'index',
+        component: () => import('@/views/pictures/index.vue'),
+        name     : 'picturesIndex',
+        meta     : {
+          title: '轮播图',
+          icon : 'component',
+          noCache: true
+        }
+      },
+      {
+        hidden:true,
+        path     : 'create',
+        component: () => import('@/views/pictures/create.vue'),
+        name     : 'picturesCreate',
+        meta     : {
+          title: '创建轮播图',
+          icon : 'star',
+          noCache: true
+        }
+      },
+      {
+        hidden:true,
+        path     : 'update',
+        component: () => import('@/views/pictures/edit.vue'),
+        name     : 'picturesUpdate',
+        meta     : {
+          title: '创建轮播图',
+          icon : 'star',
+          noCache: true
+        }
+      }
+    ]
+  },
   {
     path     : '/list-one',
     redirect : '/list-one/index',
@@ -589,10 +658,164 @@ export const asyncRouterMap = [
       {
         path     : 'index',
         component: () => import('@/views/list-one/index.vue'),
-        name     : 'index',
+        name     : 'listOneIndex',
         meta     : {
           title: '赴加生子福利',
           icon : 'star',
+          noCache: true
+        }
+      }
+    ]
+  },
+  {
+    path     : '/list-two',
+    redirect : '/list-two/index',
+    component: Layout,
+    meta     : {
+      title: 'list-two',
+      icon : 'star',
+      noCache: true
+    },
+    children : [
+      {
+        path     : 'index',
+        component: () => import('@/views/list-two/index.vue'),
+        name     : 'listTwoIndex',
+        meta     : {
+          title: '成功案例',
+          icon : 'list',
+          noCache: true
+        }
+      }
+    ]
+  },
+  {
+    path     : '/list-three',
+    redirect : '/list-three/index',
+    component: Layout,
+    meta     : {
+      title: 'list-three',
+      icon : 'star',
+      noCache: true
+    },
+    children : [
+      {
+        path     : 'index',
+        component: () => import('@/views/list-three/index.vue'),
+        name     : 'listThreeIndex',
+        meta     : {
+          title: '月子中心',
+          icon : 'people',
+          noCache: true
+        }
+      }
+    ]
+  },
+  {
+    path     : '/list-four',
+    redirect : '/list-four/index',
+    component: Layout,
+    meta     : {
+      title: 'list-four',
+      icon : 'star',
+      noCache: true
+    },
+    children : [
+      {
+        path     : 'index',
+        component: () => import('@/views/list-four/index.vue'),
+        name     : 'listFourIndex',
+        meta     : {
+          title: '政策解析',
+          icon : 'documentation',
+          noCache: true
+        }
+      }
+    ]
+  },
+  {
+    path     : '/list-five',
+    redirect : '/list-five/index',
+    component: Layout,
+    meta     : {
+      title: 'list-five',
+      icon : 'star',
+      noCache: true
+    },
+    children : [
+      {
+        path     : 'index',
+        component: () => import('@/views/list-five/index.vue'),
+        name     : 'listFiveIndex',
+        meta     : {
+          title: '赴加生子费用',
+          icon : 'money',
+          noCache: true
+        }
+      }
+    ]
+  },
+  {
+    path     : '/list-six',
+    redirect : '/list-six/index',
+    component: Layout,
+    meta     : {
+      title: 'list-six',
+      icon : 'star',
+      noCache: true
+    },
+    children : [
+      {
+        path     : 'index',
+        component: () => import('@/views/list-six/index.vue'),
+        name     : 'listSixIndex',
+        meta     : {
+          title: '赴加攻略',
+          icon : 'form',
+          noCache: true
+        }
+      }
+    ]
+  },
+  {
+    path     : '/list-seven',
+    redirect : '/list-seven/index',
+    component: Layout,
+    meta     : {
+      title: 'list-seven',
+      icon : 'star',
+      noCache: true
+    },
+    children : [
+      {
+        path     : 'index',
+        component: () => import('@/views/list-seven/index.vue'),
+        name     : 'listSevenIndex',
+        meta     : {
+          title: '赴加签证',
+          icon : 'international',
+          noCache: true
+        }
+      }
+    ]
+  },
+  {
+    path     : '/list-eight',
+    redirect : '/list-eight/index',
+    component: Layout,
+    meta     : {
+      title: 'list-eight',
+      icon : 'star',
+      noCache: true
+    },
+    children : [
+      {
+        path     : 'index',
+        component: () => import('@/views/list-eight/index.vue'),
+        name     : 'listEightIndex',
+        meta     : {
+          title: '大温介绍',
+          icon : 'table',
           noCache: true
         }
       }

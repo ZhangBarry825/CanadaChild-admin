@@ -11,11 +11,11 @@
       </div>
     </div>
     <el-table v-loading="loading"
-      ref="multipleTable"
-      :data="tableData3"
-      tooltip-effect="dark"
-      style="width: 100%"
-      @selection-change="handleSelectionChange">
+              ref="multipleTable"
+              :data="tableData3"
+              tooltip-effect="dark"
+              style="width: 100%"
+              @selection-change="handleSelectionChange">
 
       <el-table-column
         type="selection"
@@ -83,7 +83,7 @@
   import {searchArticle} from "@/api/article";
 
   export default {
-    name   : 'listOneIndex',
+    name   : 'picturesIndex',
     data() {
       return {
         tableData3       : [],
@@ -92,7 +92,7 @@
         currentPage      : 1,
         searchText:'',
         loading:false,
-        type:'赴加生子福利'
+        type:'轮播图'
       };
     },
     filters: {
@@ -149,7 +149,7 @@
         console.log(this.multipleSelection);
       },
       handleEdit(index, row) {
-        this.$router.push('/article/update?id=' + row.id);
+        this.$router.push('/pictures/update?id=' + row.id);
       },
       allDelete() {
         if (this.multipleSelection.length < 1) {
@@ -199,7 +199,7 @@
         return row.status === value;
       },
       goPublish() {
-        this.$router.push('/article/create?type='+this.type);
+        this.$router.push('/pictures/create?type='+this.type);
       },
       currentChange(val) {
 
@@ -215,22 +215,22 @@
       },
       searchRes(pageNum, pageSize){
         if(this.searchText!==''){
-        let key=this.searchText
+          let key=this.searchText
           let data={
-          key:key,
-          type:this.type,
-          page_num:pageNum,
-          page_size:pageSize
+            key:key,
+            type:this.type,
+            page_num:pageNum,
+            page_size:pageSize
           }
-        searchArticle(data).then(res => {
-          console.log("res:");
-          console.log(res);
-          if (res.code === 200) {
-            this.tableData3 = res.data.rows;
-            this.totalPage = res.data.count;
-            // this.currentPage = pageNum;
-          }
-        });
+          searchArticle(data).then(res => {
+            console.log("res:");
+            console.log(res);
+            if (res.code === 200) {
+              this.tableData3 = res.data.rows;
+              this.totalPage = res.data.count;
+              // this.currentPage = pageNum;
+            }
+          });
         }else {
           this.getItems(this.type, 1, 10);
         }

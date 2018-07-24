@@ -83,7 +83,7 @@
   import {searchArticle} from "@/api/article";
 
   export default {
-    name   : 'listOneIndex',
+    name   : 'listTwoIndex',
     data() {
       return {
         tableData3       : [],
@@ -92,7 +92,7 @@
         currentPage      : 1,
         searchText:'',
         loading:false,
-        type:'赴加生子福利'
+        type:'成功案例'
       };
     },
     filters: {
@@ -144,6 +144,7 @@
           });
         });
       },
+
       handleSelectionChange(val) {
         this.multipleSelection = val;
         console.log(this.multipleSelection);
@@ -202,7 +203,6 @@
         this.$router.push('/article/create?type='+this.type);
       },
       currentChange(val) {
-
         if(this.searchText===''){
           console.log(val);
           this.currentPage = val;
@@ -223,12 +223,9 @@
           page_size:pageSize
           }
         searchArticle(data).then(res => {
-          console.log("res:");
-          console.log(res);
           if (res.code === 200) {
             this.tableData3 = res.data.rows;
             this.totalPage = res.data.count;
-            // this.currentPage = pageNum;
           }
         });
         }else {
