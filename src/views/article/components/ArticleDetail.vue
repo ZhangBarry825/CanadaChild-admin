@@ -230,7 +230,7 @@
           this.postForm.content = response.data.content;
           this.postForm.type = response.data.type;
           this.postForm.article_status = response.data.status;
-          this.postForm.cover = response.data.cover;
+          this.postForm.cover = "/api"+response.data.cover;
 
           this.postForm.update_time = new Date();
           console.log(this.postForm.create_time);
@@ -270,7 +270,7 @@
             status     : this.postForm['article_status'],
             description: this.postForm['description'],
             content    : this.postForm['content'],
-            cover      : this.postForm['cover']
+            cover      : this.postForm['cover'].replace('/api','')
           };
           this.loading = true;
           console.log(data);
@@ -358,25 +358,30 @@
       }
     },
     mounted() {
-      console.log("this.$route.query.type：");
-      console.log(this.$route.query.type);
-      if (this.$route.query.type === "赴加生子福利") {
-        this.postForm.type = "赴加生子福利";
-      } else if (this.$route.query.type === "成功案例") {
-        this.postForm.type = "成功案例";
-      } else if (this.$route.query.type === "月子中心") {
-        this.postForm.type = "月子中心";
-      } else if (this.$route.query.type === "政策解析") {
-        this.postForm.type = "政策解读";
-      } else if (this.$route.query.type === "赴加生子费用") {
-        this.postForm.type = "赴加生子费用";
-      } else if (this.$route.query.type === "赴加攻略") {
-        this.postForm.type = "赴加攻略";
-      } else if (this.$route.query.type === "赴加签证") {
-        this.postForm.type = "赴加签证";
-      } else if (this.$route.query.type === "大温介绍") {
-        this.postForm.type = "大温介绍";
+      this.postForm.create_time=new Date()
+
+      if(!this.isEdit){
+        if (this.$route.query.type === "赴加生子福利") {
+          this.postForm.type = "赴加生子福利";
+        } else if (this.$route.query.type === "成功案例") {
+          this.postForm.type = "成功案例";
+        } else if (this.$route.query.type === "月子中心") {
+          this.postForm.type = "月子中心";
+        } else if (this.$route.query.type === "政策解读") {
+          this.postForm.type = "政策解读";
+        } else if (this.$route.query.type === "赴加生子费用") {
+          this.postForm.type = "赴加生子费用";
+        } else if (this.$route.query.type === "赴加攻略") {
+          this.postForm.type = "赴加攻略";
+        } else if (this.$route.query.type === "赴加签证") {
+          this.postForm.type = "赴加签证";
+        } else if (this.$route.query.type === "大温介绍") {
+          this.postForm.type = "大温介绍";
+        }else if (this.$route.query.type === "轮播图") {
+          this.postForm.type = "轮播图";
+        }
       }
+
     }
   };
 </script>

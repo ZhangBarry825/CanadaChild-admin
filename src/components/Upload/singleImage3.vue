@@ -106,10 +106,10 @@ export default {
       .myDisaplay{
         width: 100%;
         height: 100%;
+        background-size: cover;
         background-color: gainsboro;
         background-position: center;
         background-repeat: no-repeat;
-        background-size: cover;
       }
     }
     .image-preview-action {
