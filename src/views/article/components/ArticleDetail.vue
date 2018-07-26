@@ -261,7 +261,17 @@
             message: '摘要为必传项',
             type   : 'error'
           });
-        } else {
+        } else if (!this.postForm.content) {
+          this.$message({
+            message: '文章内容为必传项',
+            type   : 'error'
+          });
+        }else if (!this.postForm.cover) {
+          this.$message({
+            message: '文章封面为必传项',
+            type   : 'error'
+          });
+        }  else {
           // this.postForm.create_time = parseInt(this.postForm.create_time / 1000);
           console.log(this.postForm.create_time);
           let data = {
@@ -367,8 +377,8 @@
           this.postForm.type = "成功案例";
         } else if (this.$route.query.type === "月子中心") {
           this.postForm.type = "月子中心";
-        } else if (this.$route.query.type === "政策解读") {
-          this.postForm.type = "政策解读";
+        } else if (this.$route.query.type === "政策解析") {
+          this.postForm.type = "政策解析";
         } else if (this.$route.query.type === "赴加生子费用") {
           this.postForm.type = "赴加生子费用";
         } else if (this.$route.query.type === "赴加攻略") {

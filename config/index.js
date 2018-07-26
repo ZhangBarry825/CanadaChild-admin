@@ -12,7 +12,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api': {
-        target      : "http://canada.barry.umdev.cn",
+        target      : "https://canada-api.luckyme.com.cn",
         changeOrigin: true,
         pathRewrite:{
           '^/api':''
@@ -74,7 +74,7 @@ module.exports = {
      * then assetsPublicPath should be set to "/bar/".
      * In most cases please use '/' !!!
      */
-    assetsPublicPath: '/vue-element-admin/', // If you are deployed on the root path, please use '/'
+    assetsPublicPath: '/', // If you are deployed on the root path, please use '/'
 
     /**
      * Source Maps
