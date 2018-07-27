@@ -823,6 +823,24 @@ export const asyncRouterMap = [
   },
   {
     hidden   : true,
+    path     : '/user',
+    component: Layout,
+    children : [
+      {
+        path     : 'updatepwd',
+        component: () => import('@/views/user/updatepwd'),
+        name     : 'updatePwd',
+        meta     : {
+          title: '修改密码',
+          icon : 'edit',
+          noCache: true
+        },
+        hidden   : true
+      }
+  ]
+  },
+  {
+    hidden   : true,
     path     : '/article',
     component: Layout,
     children : [

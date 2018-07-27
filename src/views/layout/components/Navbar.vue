@@ -35,6 +35,9 @@
             <!--</el-dropdown-item>-->
           <!--</a>-->
           <el-dropdown-item divided>
+            <span @click="updatePwd" style="display:block;">修改密码</span>
+          </el-dropdown-item>
+          <el-dropdown-item divided>
             <span @click="logout" style="display:block;">{{$t('navbar.logOut')}}</span>
           </el-dropdown-item>
         </el-dropdown-menu>
@@ -69,6 +72,9 @@ export default {
     ])
   },
   methods: {
+    updatePwd(){
+      this.$router.push('/user/updatepwd')
+    },
     toggleSideBar() {
       this.$store.dispatch('toggleSideBar')
     },
