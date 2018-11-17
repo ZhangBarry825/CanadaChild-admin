@@ -230,8 +230,7 @@
           this.postForm.content = response.data.content;
           this.postForm.type = response.data.type;
           this.postForm.article_status = response.data.status;
-          this.postForm.cover = "/api"+response.data.cover;
-
+          this.postForm.cover = "http://canada-api.umsoft.cn"+response.data.cover;
           this.postForm.update_time = new Date();
           console.log(this.postForm.create_time);
 

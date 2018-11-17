@@ -55,7 +55,7 @@ export default {
     },
     handleImageScucess(file) {
       console.log(file)
-      this.emitInput('/api/'+file.data)
+      this.emitInput('http://canada-api.umsoft.cn/'+file.data)
     },
     beforeUpload() {
       this.rmImage()
