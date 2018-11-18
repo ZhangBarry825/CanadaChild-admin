@@ -279,7 +279,7 @@
             status     : this.postForm['article_status'],
             description: this.postForm['description'],
             content    : this.postForm['content'],
-            cover      : this.postForm['cover'].replace('/api','')
+            cover      : this.postForm['cover'].replace('http://canada-api.umsoft.cn','')
           };
           this.loading = true;
           console.log(data);
